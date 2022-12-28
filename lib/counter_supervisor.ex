@@ -9,6 +9,7 @@ defmodule CounterSupervisor do
     DynamicSupervisor.init(strategy: :one_for_one)
   end
 
+  @spec start_child(any, any) :: :ignore | {:error, any} | {:ok, pid} | {:ok, pid, any}
   def start_child(initial_count, name) do
     spec = {Counter, initial_count: initial_count, name: name}
     DynamicSupervisor.start_child(__MODULE__, spec)
