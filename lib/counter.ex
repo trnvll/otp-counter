@@ -9,12 +9,12 @@ defmodule Counter do
     GenServer.start_link(__MODULE__, initial_count, name: name)
   end
 
-  def increment(pid) do
-    GenServer.call(pid, :inc)
+  def increment(pid, by) do
+    GenServer.call(pid, {:inc, by})
   end
 
-  def decrement(pid) do
-    GenServer.call(pid, :dec)
+  def decrement(pid, by) do
+    GenServer.call(pid, {:dec, by})
   end
 
   def current(pid) do
@@ -38,13 +38,13 @@ defmodule Counter do
     {:ok, initial_count}
   end
 
-  def handle_call(:inc, _from, count) do
-    updated_count = count + 1
+  def handle_call({:inc, by}, _from, count) do
+    updated_count = count + by
     {:reply, updated_count, updated_count}
   end
 
-  def handle_call(:dec, _from, count) do
-    updated_count = count - 1
+  def handle_call({:dec, by}, _from, count) do
+    updated_count = count - by
     {:reply, updated_count, updated_count}
   end
 
